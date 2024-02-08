@@ -1,0 +1,26 @@
+display.setStatusBar(display.HiddenStatusBar)
+local screenWidth, screenHeight = display.actualContentWidth, display.actualContentHeight
+
+local ball = display.newCircle(screenWidth / 2, screenHeight / 2, 20)
+local player = display.newRect(screenWidth / 4, screenHeight / 2, 50, 50)
+local isAutoParryActive = true
+
+local function dashBall()
+    transition.to(ball, {x = ball.x, y = ball.y, time = 300})
+end
+
+local function checkDistanceAndDash()
+    local distance = math.sqrt((ball.x - player.x)^2 + (ball.y - player.y)^2)
+    local triggerDistance = 50
+    if distance < triggerDistance then
+        dashBall()
+    end
+end
+
+local function gameLoop()
+    if isAutoParryActive then
+        checkDistanceAndDash()
+    end
+end
+
+Runtime:addEventListener("enterFrame", gameLoop)
